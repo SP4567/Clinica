@@ -96,10 +96,11 @@ if user_input:
 User question: {user_input}
 """)
         st.markdown(f"**You:** {user_input}")
-        st.markdown(f"**MedBot:** {response.text}")
+        st.markdown(f"**Clinica:** {response.text}")
         st.markdown("⚠️ *This is not medical advice. Always consult a healthcare professional.*")
 
 with st.expander("Chat History"):
     for i, msg in enumerate(st.session_state.chat.history):
         role = msg.role.capitalize()
+
         st.markdown(f"**{role}:** {msg.parts[0].text if msg.parts else ''}")
