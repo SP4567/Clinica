@@ -1,7 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 import os
-
 genai.configure(api_key="AIzaSyCG9c97r769fcAXlLErJuVizpoXTUV3DWM")
 
 model = genai.GenerativeModel("gemini-2.0-flash")
@@ -14,6 +13,7 @@ st.title("🩺 Clinica - AI Medical Assistant")
 st.markdown("Ask any health-related question. Answers are AI-generated, hence always consult a doctor after checking here.")
 
 user_input = st.text_input("Type your medical question here:")
+user_location = st.text_input("Type your location here for doctor nearby doctor recommendations:")
 
 if user_input:
     with st.spinner("Clinica is thinking..."):
@@ -75,6 +75,12 @@ if user_input:
             - If the user requests diagnosis, prescriptions, or dosing: politely decline and redirect to a clinician.
             - If symptoms suggest emergency, clearly advise immediate local emergency services.
             
+            ## Doctors Nearby according to the location, enter the location below
+             ## Doctors Nearby
+            The user has entered the following location: {user_location}.
+            - Based on this, suggest nearby doctors, hospitals, or clinics and include their contact details such as mobile number both normal and landline if possible.
+
+            
             ## Output Format
             - Use clear headings, short paragraphs, and bullets.
             - Start with a one-sentence **Summary**.
@@ -96,11 +102,10 @@ if user_input:
 User question: {user_input}
 """)
         st.markdown(f"**You:** {user_input}")
-        st.markdown(f"**Clinica:** {response.text}")
+        st.markdown(f"**MedBot:** {response.text}")
         st.markdown("⚠️ *This is not medical advice. Always consult a healthcare professional.*")
 
 with st.expander("Chat History"):
     for i, msg in enumerate(st.session_state.chat.history):
         role = msg.role.capitalize()
-
         st.markdown(f"**{role}:** {msg.parts[0].text if msg.parts else ''}")
